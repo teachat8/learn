@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// 1.参数值传递
+// js中，函数的参数传递方式都是按值传递的，但是js中有保存引用的对象，比如数组
+function curve( arr, amount ) {
+    // var arr = arr;
+    for ( var i = 0; i<arr.length; i++ ) {
+        arr[i] += amount;
+    }
+}
+let grades = [1,2,3];
+curve(grades, 5);
+//6,7,8 因为改成函数里面的arr，会影响到外界的arr，他们都是对象共享一个内存地址
+console.log(grades);
+
+let obj1 = {
+    name : '吕胖胖'
+};
+function changObj( obj ) {
+    // var obj = obj;
+    obj.name = '吕肥肥';
+}
+changObj(obj1);
+// 吕肥肥
+console.log(obj1);
+
+// 2.对象的key都是字符串
+let obj2 = {
+    1 : '212'
+};
+//string,这是因为js中数组是一种特殊的对象，用来表示偏移量的索引是该对象的属性，这些索引在内部都会被转化为字符串，所以用sort排序的时候一定要注意!
+console.log(typeof (Object.keys(obj2))[0] );
+
+// 3.浅复制
+var nums = [1,2,3];
+var nums1 = nums;
+nums1[0] = 4;
+console.log(nums);
+
+// 4.
+// 数组添加元素
+// 后面添加:push()
+// 开头添加:unshift()
+
+// 数组删除元素
+// 后面删除:pop()
+// 开头删除:shift()
+
+
+</script>
+</body>
+</html>
