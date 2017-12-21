@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+var z = 10; 
+
+function foo() {
+    console.log(z);
+}
+(function() {
+    var z = 20;
+    //10
+    foo();
+})()
+
+function foo1() {
+    var z = 30;
+    console.log(z);
+}
+foo1();
+
+// 下面的代码段 证明闭包可以让某个变量始终保持在内存中
+function aa() {
+    var x = 1;
+    function bb() {
+        console.log(x);
+    }
+    function cc() {
+        x++;
+    }
+    return {
+        bb : bb,
+        cc :cc
+    }
+}
+var aa1 = aa();
+// 1
+aa1.bb();
+aa1.cc();
+// 2
+aa1.bb();
+
+// 代码片段1
+var name = "The Window";
+　　var object = {
+　　　　name : "My Object",
+　　　　getNameFunc : function() {
+            // My Object
+            console.log(this.name);
+　　　　　　return function() {
+                // The Window               
+　　　　　　　　console.log(this.name);
+　　　　　　};
+　　　　}
+　　};
+// window 因为这里返回的是匿名函数  后面一个()相当于执行了window.匿名函数();
+object.getNameFunc()();
+</script>
+</body>
+</html>
