@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+function f1() {
+    n = 999;
+    console.log(this);
+    function f2() {
+        console.log(this);
+        alert(1);
+    }
+    return f2;
+}
+f1()();
+
+// 下面的例子说明函数的作用于是在定义的时候就确定的额，就是里面找都是静态作用域
+function f1(x) {
+    return function() {
+        console.log(x);
+    }
+}
+let a = f1(1);
+a();
+
+
+// xx是全局变量，所以会一直保存在内存中，直到页面关闭
+let xx = 1;
+function addXx() {
+    xx++;
+}
+addXx();
+console.log(xx);
+addXx();
+console.log(xx);
+
+// yy是局部变量，那么在函数addYy结束后，yy就会被销毁，因为只有全局变量才能一直保存在内存中
+function addYy() {
+    var yy = 1;
+    yy++;
+    return yy;
+}
+console.log(addYy());
+console.log(addYy());
+console.log(addYy());
+console.log(addYy());
+
+
+function outFn() {
+    return function() {
+        var i = 0;
+        i++;
+        return i;
+    }
+}
+
+var a1 = outFn();
+// 1
+console.log(a1());
+// 1
+console.log(a1());
+
+function outFn1() {
+    var i = 0;
+    return function() {
+        i++;
+        return i;
+    }
+}
+
+var a2= outFn1();
+
+// 1
+console.log(a2());
+// 2
+console.log(a2());
+
+
+
+
+
+
+</script>
+</body>
+</html>
