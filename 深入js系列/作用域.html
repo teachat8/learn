@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// var value = 1;
+// function foo() {
+//     console.log(value);
+// }
+
+// function bar() {
+//     var value = 2;
+//     foo();
+// }
+// // 1
+// bar();
+
+var value = 1;
+function foo() {
+    console.log(value);
+}
+
+function bar() {
+    // 注意这一点的不同
+    value = 2;
+    foo();
+}
+// 2
+bar();
+
+
+// var value = 1;
+// function foo() {
+//     console.log(value);
+// }
+
+// function bar() {
+//     foo();
+//     // 注意这一点的不同
+//     value = 2;
+// }
+// // 1
+// bar();
+
+
+var scope = 'global scope';
+function checkScope() {
+    var scope = 'local scope';
+    function f() {
+        return scope;
+    }
+    return f();
+}
+checkScope();
+
+
+</script>
+</body>
+</html>
