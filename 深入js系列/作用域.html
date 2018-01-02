@@ -47,8 +47,17 @@ bar();
 // // 1
 // bar();
 
-
 var scope = 'global scope';
+
+function checkScope() {
+    var scope = 'local scope';
+    function f() {
+        return scope;
+    }
+    return f;
+}
+checkScope()();
+
 function checkScope() {
     var scope = 'local scope';
     function f() {
