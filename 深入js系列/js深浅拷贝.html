@@ -7,7 +7,12 @@
     <title>Document</title>
 </head>
 <body>
+<a href="javascript:;" id="testBtn">点我</a>
+<script src="http://image.mihui365.com/weini-static/js/jquery.min.js"></script>
 <script>
+$(document).on('click', '#testBtn', function() {
+    console.log(11);
+});
 var obj = {
     a : '吕胖胖',
     arr : [2, 3]
@@ -43,6 +48,19 @@ var obj2 = deepCopy(obj);
 obj1.arr[0] = 111;
 obj2.arr[0] = 999;
 console.log(obj);
+
+var add = function(a) {
+    var sum = a;
+    var addMore = function(b) {
+        sum += b;
+        return addMore;
+    };
+    addMore.toString = function() {
+        return sum;
+    };
+    return addMore;
+}
+console.log(add(1)(2)(3));
 
 </script>
 </body>
