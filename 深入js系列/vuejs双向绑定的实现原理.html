@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue.js双向绑定的实现原理</title>
+</head>
+<body>
+<input type="text" id="a" value="1"/>
+<span id="b"></span>
+<script>
+// 最简单的vuejs实现
+var obj = {};
+Object.defineProperty(obj, 'hello', {
+    get : function() {
+       console.log('get方法被调用了');
+    },
+    set : function(newVal) {
+        document.getElementById('a').value = newVal;
+        document.getElementById('b').innerHTML = newVal;        
+        console.log('set方法被调用，参数是' + newVal);
+    }
+});
+document.addEventListener('keyup', function(e) {
+    obj.hello = e.target.value||'';
+});
+
+</script>
+</body>
+</html>
