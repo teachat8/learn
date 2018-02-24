@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>基础知识1</title>
+</head>
+<body>
+<script>
+// 1.类型和类型转换
+
+// A.隐式转化
+// '', 0, undefined, NaN, false 在if里面都会自动转化为false
+// 空数组、对象、函数定义都会自动转换为true
+if ( '0' ) {
+    alert(1);
+}
+if ( 0 ) {
+    alert(2);
+}
+if ( [] ) {
+    alert(3);
+}
+
+// B.String & Number之间的转换
+// + -> 数字会被转化为字符串
+// *,/,, -> 字符串会被转化为数字
+console.log(1 + '2');//'12'
+console.log(1 + '' + 2);//'12'
+console.log(1 * '2');//2
+
+// C.==在验证相等性的时候，会对类型不同的值做一个类型转换。===对要判断的值不做类型转换。
+// 如果你将一个布尔类型的和非布尔类型的判断，JavaScript会将布尔类型的转换为数字然后再比对。
+
+// 2.值vs引用
+// console.log(aa);
+
+
+// forEach 和 map的区别
+// forEach返回的是undefined，但是会改变原始数据的值;
+// map会得到一个新数组并返回，原始的数组不会受到影响
+let arr = [1, 2, 3, 4, 5];
+let arr1 = arr.map((item) => {
+    return item * 2;
+});
+console.log(arr);
+console.log(arr1);
+
+
+
+</script>
+</body>
+</html>
