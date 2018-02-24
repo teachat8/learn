@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Document</title>
+<style>
+* {
+    padding: 0;
+    margin: 0;
+}
+.ex1 {
+    width: 100px;
+    height: 100px;
+    background: #000;
+    border: 1px solid red;
+}
+</style>
+</head>
+<body>
+<div class="ex1"></div>
+dpr = 物理像素（比如5s的是640） / 设备独立像素（比如5s的是320，6的是375）
+<script>
+var devicePixelRatio = window.devicePixelRatio,
+    scale = 1,
+    dpr = 1;
+if ( devicePixelRatio >= 3 ) {
+    dpr = 3;
+} else if ( devicePixelRatio >= 2 ) {
+    dpr = 2;
+}
+scale = 1 / dpr;
+var metaEl = document.createElement('meta');
+metaEl.setAttribute('name', 'viewport');
+metaEl.setAttribute('content', 'initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
+document.querySelector('head').append(metaEl);
+</script>
+</body>
+</html>
