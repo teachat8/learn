@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Document</title>
+<style>
+* {
+    padding: 0;
+    margin: 0;
+}
+.test {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+</style>
+</head>
+<body>
+<img src="http://pic66.nipic.com/file/20150504/20075253_213616608000_2.jpg" class="test" />
+<script>
+function Parent(name) {
+    this.name = name;
+}
+function Child(age) {
+    Parent.call(this);
+    this.age = age;
+}
+Child.prototype = new Parent();
+
+console.log(Parent.prototype);
+
+</script>
+</body>
+</html>
