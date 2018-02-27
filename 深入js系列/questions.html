@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+var tarrgetObj = {
+a:{
+    b:{
+        c:{
+            d:{
+                e:{
+                    name:"百度"
+                }
+            },
+            l:{
+                name:"李鹏--> QQ:3206064928"
+            }
+        }
+    }
+},
+d:"90",
+e:"90",
+l:{
+    a:{
+        b:{
+            c:{
+                version:"1.0.0.1",
+                name:"李鹏--> QQ:3206064928"
+            }
+        }
+    }
+},
+f:{
+    name:"李鹏--> QQ:3206064928",
+    update:"2017年03月20日"
+}
+};
+// var res = {};
+function test(obj) {
+    var res = {};
+    for ( var x in obj ) {
+        let item = obj[x];
+        if ( typeof item === 'object' ) {
+            res = test(item);
+        } else {
+            if ( item.indexOf('李鹏' ) != -1 ) {
+                // res[]
+                // console.log(item);
+                res[x] = {};
+                res[x]['当前对象'] = item;
+                // console.log(res);
+            }
+        }
+    }
+    return res;
+}
+// console.log(test(tarrgetObj));
+
+
+function test1() {
+    var num = localStorage.getItem("numTotal") || 0;
+    localStorage.setItem( "numTotal", ++num );
+    console.log( typeof num);
+    // alert(num);
+}
+test1();
+
+
+scope = "window";
+env = {
+    scope:"inner",
+    getscope:function(){
+        console.log(this.scope)
+    }
+}
+env.getscope.call(window);//window
+env.getscope();//inner
+
+
+
+var foo = 10 + "20";
+var xx = "I am MR_LP,QQ:3206064928".split("").reverse().join("_");
+(window.foo||(window.foo = "bar"));
+console.log(xx);//8_2_9
+console.log(window.foo);//'1020'
+
+var foo = "hello";
+(function(){
+    var bar = "MR_LP";
+    // alert(foo + bar + "QQ:3206064928");
+})();
+// alert(foo + bar + "QQ:3206064928");
+
+
+var foo = [];
+// var foo[2] = 1;
+foo.push(2);
+// alert(foo.length);//[,,1,2]
+
+var foo = {n:1};
+// var bar = foo;//{n:1}
+foo.x = foo = {n : 2};
+console.log(foo.x);//{n:2}
+
+
+// console.log("one");
+// setTimeout(function(){
+//     console.log("two");
+// },1000);
+// console.log("three");
+
+
+
+
+</script>
+</body>
+</html>
