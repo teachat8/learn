@@ -8,49 +8,52 @@
 </head>
 <body>
 <script>
-function f1() {
-    n = 999;
-    console.log(this);
-    function f2() {
-        console.log(this);
-        alert(1);
-    }
-    return f2;
-}
-f1()();
+// 闭包-能够读取其他函数内部变量的函数
+
+// function f1() {
+//     n = 999;
+//     console.log(this);
+//     function f2() {
+//         console.log(this);
+//         alert(1);
+//     }
+//     return f2;
+// }
+// f1()();
 
 // 下面的例子说明函数的作用于是在定义的时候就确定的额，就是里面找都是静态作用域
-function f1(x) {
-    return function() {
-        console.log(x);
-    }
-}
-let a = f1(1);
-a();
+// function f1(x) {
+//     return function() {
+//         console.log(x);
+//     }
+// }
+// let a = f1(1);
+// a();
 
 
-// xx是全局变量，所以会一直保存在内存中，直到页面关闭
-let xx = 1;
-function addXx() {
-    xx++;
-}
-addXx();
-console.log(xx);
-addXx();
-console.log(xx);
+// // xx是全局变量，所以会一直保存在内存中，直到页面关闭
+// let xx = 1;
+// function addXx() { 
+//     xx++;
+// }
+// addXx();
+// console.log(xx);
+// addXx();
+// console.log(xx);
 
-// yy是局部变量，那么在函数addYy结束后，yy就会被销毁，因为只有全局变量才能一直保存在内存中
-function addYy() {
-    var yy = 1;
-    yy++;
-    return yy;
-}
-console.log(addYy());
-console.log(addYy());
-console.log(addYy());
-console.log(addYy());
+// // yy是局部变量，那么在函数addYy结束后，yy就会被销毁，因为只有全局变量才能一直保存在内存中
+// function addYy() {
+//     var yy = 1;
+//     yy++;
+//     return yy;
+// }
+// console.log(addYy());
+// console.log(addYy());
+// console.log(addYy());
+// console.log(addYy());
 
 
+// 下面的i是一个函数内部的，所以不会保存在内存中函数执行完毕就会销毁
 function outFn() {
     return function() {
         var i = 0;
@@ -65,6 +68,7 @@ console.log(a1());
 // 1
 console.log(a1());
 
+// 下面的i定义在函数outFn1中，但是却被一个匿名函数所引用，所以就形成了闭包，i将保存在内存中
 function outFn1() {
     var i = 0;
     return function() {
@@ -79,11 +83,6 @@ var a2= outFn1();
 console.log(a2());
 // 2
 console.log(a2());
-
-
-
-
-
 
 </script>
 </body>

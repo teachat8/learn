@@ -9,13 +9,11 @@
 <body>
 <script>
 var z = 10; 
-
 function foo() {
     console.log(z);
 }
 (function() {
     var z = 20;
-    //10
     foo();
 })()
 
