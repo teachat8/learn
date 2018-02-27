@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>闭包</title>
+</head>
+<body>
+<script>
+
+// 1.对象模式
+function createPerson() {
+    var _name = '';
+    return {
+        getName : function() {
+            return _name;
+        },
+        setName : function(value) {
+            if( value.charAt(0) === '吕' ) {
+                _name = value;
+            } else {
+                throw new Error('姓氏不对');
+            }
+        }
+    };
+}
+var p = createPerson();
+p.setName('吕胖胖');
+console.log(p.getName());
+
+// 函数模式(下面函数可说明闭包可以让变量记住他定义时候的值，也即是让变量保存在内存中)
+function foo() {
+    var num = Math.random();
+    function func() {
+        return num;
+    }
+    return func;
+}
+var f = foo();
+var res1 = f();
+var res2 = f();
+console.log(res1);
+console.log(res2);
+console.log(Object.getPrototypeOf(f));
+
+function deepCopy(p) {
+    var c = {};
+    for ( var i in p ) {
+        if ( typeof p[i] === 'object' ) {
+            c[i] = deepCopy(p[i]);
+        } else {
+            c[i] = p[i];
+        }
+    }
+    return c;
+}
+var obj = {
+    name : '吕胖胖',
+    age : 3,
+    wifies : ['王小美']
+};
+var obj1 = deepCopy(obj);
+var obj2 = Object.assign({}, obj);
+obj2.name = '吕66';
+obj2.wifies[0] = '吕胖胖';
+obj1.name = '吕肥肥';
+obj1.wifies[0] = '王大美';
+console.log(obj);
+console.log(obj1);
+console.log(obj2);
+</script>
+    
+</body>
+</html>
