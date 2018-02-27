@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>vuejs-第二种实现方式1</title>
+    <meta charset="utf-8">
+</head>
+<body>
+
+<div id="app">
+    <input v-model="message" />
+    {{message}}
+</div> 
+<script>
+// 数据初始化绑定
+// 1、输入框以及文本节点与data中的数据绑定
+// 对作用范围内的html进行遍历提取
+function compile(node, vm) {
+    var reg = /\{\{(.*)\}\}/;
+    // dom节点类型是元素——<input v-model="message" />
+    if ( node.nodeType===1 ) {
+        var attr = node.attributes;
+        for(var i = 0; i<attr.length; i++) {
+            if( attr[i].nodeName==='v-model' ) {
+                // 获取v-model绑定的属性名
+                var name = attr[i].nodeValue;
+                // 将data的值赋给node
+                node.value = vm.data[name];
+                node.removeAttribute('v-model');
+            }
+        }
+    }
+    // dom节点类型是text——{{message}}
+    if ( node.nodeType===3 ) {
+        if( reg.test(node.nodeValue) ) {
+            // 获取匹配到的字符串
+            var name = RegExp.$1;
+            // trim（）—— ES5的新方法，之后不用自己写
+            name = name.trim();
+             // 将data的值赋给node
+            node.nodeValue = vm.data[name];
+        }
+    }
+}
+
+// 重新创建html
+function nodeToFragment(node, vm) {
+    // 新建一个文档碎片
+    var flag = document.createDocumentFragment(),
+        child;
+    // 这里的node就是<div id="app"><input v-model="message" />{{message}}</div> 
+    while ( child=node.firstChild ) {
+        compile(child, vm);
+        // 子节点劫持到文档碎片中
+        flag.appendChild(child);
+    }
+    return flag;
+}
+
+function Vue(options) {
+    this.data = options.data;
+    var id = options.el,
+        dom = nodeToFragment(document.querySelector('#'+id), this);
+    // 将dom返回到app里面
+    document.querySelector('#'+id).appendChild(dom);
+}
+
+let vue = new Vue({
+    el : 'app',
+    data : {
+        message : '二胖666'
+    }
+});
+</script>
+</body>
+</html>

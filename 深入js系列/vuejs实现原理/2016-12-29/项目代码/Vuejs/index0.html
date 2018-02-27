@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>vuejs-第一种实现方式</title>
+    <meta charset="utf-8">
+</head>
+<body>
+
+<div id="demo">
+    <input type="text" id="model">
+    <p id="view"></p>
+</div>
+
+<script>
+let obj = Object.create(null);
+Object.defineProperty(obj, 'a', {
+    set : function(val) {
+        document.querySelector('#model').value = val;
+        document.querySelector('#view').innerHTML = val;
+    }
+});
+
+// model-view
+obj.a = '二胖';
+
+// view-model
+document.querySelector('#model').addEventListener('keyup', function() {
+    obj.a = this.value;
+}, false);
+</script>
+</body>
+</html>

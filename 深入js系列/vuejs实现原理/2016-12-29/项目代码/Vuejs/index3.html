@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>vuejs-第二种实现方式3</title>
+    <meta charset="utf-8">
+</head>
+<body>
+
+<div id="app">
+    <input v-model="message" />
+    {{message}}
+</div> 
+<script>
+// 好莱坞有句名言. “不要给我打电话， 我会给你打电话”. 
+// 双向绑定的实现
+// 3、data中的数据变化时，文本节点的内容同步变化。即model => view的变化。
+// 发布者发出通知 => 主题对象收到通知并推送给订阅者 => 订阅者执行相应操作
+// 发出通知dep.notify() => 触发订阅者的update方法 => 更新视图。
+// 对作用范围内的html进行遍历提取（解析指令）
+// 在编译HTML的过程中，会为每个与数据绑定相关的节点生成一个订阅者watcher，watcher会将自己添加到相应属性的dep中。
+function compile(node, vm) {
+    var reg = /\{\{(.*)\}\}/;
+    // dom节点类型是元素——<input v-model="message" />
+    if ( node.nodeType===1 ) {
+        var attr = node.attributes;
+        for(var i = 0; i<attr.length; i++) {
+            if( attr[i].nodeName==='v-model' ) {
+                // 获取v-model绑定的属性名
+                var name = attr[i].nodeValue;
+                node.addEventListener('input', function(e) {
+                    //给相应的data属性赋值，进而触发该属性的set方法
+                    vm[name] = e.target.value;
+                    console.log(vm[name]);
+                }, false);
+                // 将data的值赋给node
+                node.value = vm[name];
+                node.removeAttribute('v-model');
+            }
+        }
+    }
+    // dom节点类型是text——{{message}}
+    if ( node.nodeType===3 ) {
+        if( reg.test(node.nodeValue) ) {
+            // 获取匹配到的字符串
+            var name = RegExp.$1;
+            // trim（）—— ES5的新方法，再也不用自己写了
+            name = name.trim();
+             // 将data的值赋给node
+            // node.nodeValue = vm[name];
+            // 为每个与data关联的节点生成一个Watcher
+            new Watcher(vm, node, name);
+        }
+    }
+}
+
+// 重新创建html
+function nodeToFragment(node, vm) {
+    // 新建一个文档碎片
+    var flag = document.createDocumentFragment(),
+        child;
+    // 这里的node就是<div id="app"><input v-model="message" />{{message}}</div> 
+    while ( child=node.firstChild ) {
+        compile(child, vm);
+        // 子节点劫持到文档碎片中
+        flag.appendChild(child);
+    }
+    return flag;
+}
+
+function definedReactive(obj , key, val) {
+    var dep = new Dep();
+    Object.defineProperty(obj, key, {
+        get : function() {
+            // 在监听数据的过程中，会为data中的每一个属性生成一个主题对象dep。
+            //添加订阅者watcher到主题对象Dep
+            if ( Dep.target ) {
+                dep.addSub(Dep.target);
+            } 
+            return val;
+        },
+        set : function(newVal) {
+            if ( newVal===val ) {
+                return ;
+            }
+            val = newVal;
+            console.log(newVal);
+            //发布者发通知
+            dep.notify();
+        }
+    });
+}
+
+// 劫持监听所有属性
+function observe(obj, vm) {
+    //获取所有的可枚举的属性，返回一个数组
+    Object.keys(obj).forEach( function(key) {
+        definedReactive(vm, key, obj[key]);
+    });
+}
+
+// 订阅者
+function Watcher (vm, node, name) {
+    Dep.target = this;
+    this.name = name;
+    this.node= node;
+    this.vm = vm;
+    this.update();
+    // 因为它是全局变量，也是watcher与dep关联的唯一桥梁，任何时刻都必须保证Dep.target只有一个值
+    Dep.target = null;
+}
+Watcher.prototype = {
+    update : function() {
+        this.get();
+        this.node.nodeValue = this.value;
+    },
+    //获取data里面的属性值
+    get : function() {
+        // 触发相应属性的get方法
+        this.value = this.vm[this.name];
+    }
+};
+
+// 发布者
+function Dep() {
+    this.subs = [];
+}
+Dep.prototype = {
+    addSub : function(sub) {
+        this.subs.push(sub);
+    },
+    notify : function() {
+        this.subs.forEach(function(sub) {
+            sub.update();
+        });
+    }
+};
+
+
+function Vue(options) {
+    this.data = options.data;
+
+    var data = this.data;
+    observe(data, this);
+
+    var id = options.el,
+        dom = nodeToFragment(document.querySelector('#'+id), this);
+    // 将dom返回到app里面
+    document.querySelector('#'+id).appendChild(dom);
+}
+
+let vue = new Vue({
+    el : 'app',
+    data : {
+        message : '二胖'
+    }
+});
+</script>
+</body>
+</html>
