@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+<script>
+const str = '吕肥肥是头猪';
+console.log(str.includes('吕肥肥'));
+
+const str1 = 'ioyxfduoiuyoiuoiuoiuodxstrfgsrdxfgdxfddfx';
+console.log(str1.repeat());
+
+function fn1( name = '吕肥肥' ) {
+    // console.log(name);
+}
+// fn1();
+
+// 箭头函数
+
+// 当只有一个参数的时候就可以省略(), 当只有一句语句的时候可以省略return
+var people = name => `hello${name}`;
+
+let obj = {
+    name : '吕肥肥',
+    say : function() {
+        console.log(this);
+        // console.log(this.name);
+    },
+    say1 : () => {
+        console.log(this);
+        // console.log(this.name);
+    }
+};
+obj.say();
+obj.say1();
+
+// 解构
+
+// 对象解构
+const people1 = {
+    name : 'lux',
+    age : 20
+};
+const { name, age } = people1;
+console.log(`${name}:${age}`);
+
+// 数组解构
+const color = ['red', 'blue'];
+const [first, second] = color;
+
+// 展开运算符
+
+// 数组
+const color1 = ['red', 'yellow'];
+const color2 = [...color];
+console.log(color2);
+
+// 对象
+const alp = {
+    first : 'a',
+    second : 'b'
+};
+const alphabets = {
+    ...alp,
+    third : 'c'
+};
+console.log(alphabets);
+
+const number = [1, 2, 3, 4, 5];
+const [first1, ...rest] = number;
+console.log(rest);//2,3,4,5
+
+const user = {
+    username : '吕肥肥',
+    gender : 'female',
+    age : 19,
+    address : 'peking'
+};
+const xss = {
+    age : 20
+};
+
+const { username, ...rest1 } = user;
+console.log(rest1);
+console.log({...user, ...xss});
+</script>
+</body>
+</html>
