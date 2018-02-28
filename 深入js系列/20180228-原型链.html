@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+原型链链接存在 实例 与 构造函数的原型对象 之间
+<script>
+// var Person = function(name) {
+//     this.name = name;
+// };
+// Person.prototype.getName = function() {
+//     return this.name;
+// };
+// var person1 = new Person('胖胖肥');
+// console.log(person1.__proto__===Person.prototype);//true
+// console.log(Person.prototype.constructor===Person);//true
+// console.log(person1.constructor===Person);//true
+// console.log(person1);
+// person1.getName();
+
+// var b = new Array();
+// console.log(b.constructor === Array);
+// console.log(b.__proto__ === Array.prototype);
+
+
+// console.log(Object.__proto__===Function.prototype);
+// console.log(Object.prototype.__proto__===null);
+// console.log(Person.__proto__===Function.prototype);
+
+function Person(name) {
+    this.name = name;
+}
+// 直接给Person.prototype对象赋值一个普通对象，那么Person.prototype对象的构造函数就是Object，除非手动指定constructor
+// Person.prototype = {
+//     constructor : Person,
+//     getName : function() {
+
+//     }
+// };
+// var p = new Person();
+// console.log(p.constructor===Person);
+// console.log(p.__proto__===Person.prototype);
+
+// function Person() {}
+// var person1 = new Person();
+// console.log(person1.__proto__ === Person.prototype);//true 实例.__proto__ === 该实例的构造函数.prototype对象
+// console.log(Person.prototype.__proto__ === Object.prototype);//Person.prototype为普通对象，普通对象.__proto__ === Object.prototype对象
+
+// console.log(Object.prototype.__proto__);//null
+
+// console.log(Person.__proto__ === Function.prototype );//函数对象.__proto__ === 该函数的构造函数也就是Function
+
+var animal = function() {};
+var dog = function() {};
+
+animal.price = 2000;
+dog.prototype = animal;
+var tidy = new dog();
+console.log(dog.__proto__===Function.prototype);//true
+console.log(dog.price);//dog函数本身没有price属性但是会通过dog.__proto__去找,函数.__proto__ === Function.prototype
+console.log(tidy.price);//tidy对象本身没有price属性通过tidy.__proto__=== dog.prototype===animal
+
+// 实例（tidy）和 原型对象（dog.prototype）存在一个连接。不过，要明确的真正重要的一点就是，这个连接存在于实例（tidy）与构造函数的原型对象（dog.prototype）之间，而不是存在于实例（tidy）与构造函数（dog）之间。
+
+
+</script>
+</body>
+</html>
