@@ -68,22 +68,9 @@ const alphabets = {
 console.log(alphabets);
 
 const number = [1, 2, 3, 4, 5];
-const [first1, ...rest] = number;
-console.log(rest);//2,3,4,5
+const [first, ...rest] = number;
+console.log(rest);
 
-const user = {
-    username : '吕肥肥',
-    gender : 'female',
-    age : 19,
-    address : 'peking'
-};
-const xss = {
-    age : 20
-};
-
-const { username, ...rest1 } = user;
-console.log(rest1);
-console.log({...user, ...xss});
 </script>
 </body>
 </html>

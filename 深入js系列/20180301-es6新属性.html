@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>ES6-Promise</title>
+</head>
+<body>
+<script>
+// import people from './example';
+setTimeout(function() {
+    console.log(1)
+}, 0);
+new Promise(function executor(resolve) {
+    console.log(2);
+    for( var i=0 ; i<10000 ; i++ ) {
+    i == 9999 && resolve();
+    }
+    console.log(3);
+}).then(function() {
+    console.log(4);
+});
+console.log(5);
+// //2,3,5, 4, 1
+
+
+// // 方法一
+// // then()方法会返回一个promise,必须写每一个promise对应的catch，否则走reject就会报错
+var test1 = true;
+let promise = new Promise( ( resolve, reject ) => {
+    if ( !test1 ) {
+        resolve('成功');
+    } else {
+        reject('失败');
+    }
+});
+
+let promise1 = Promise.all([promise]);
+console.log(promise);
+promise1.then( (data) => {
+    console.log(data);
+}).catch( (err) => {
+    console.log(err);
+});
+
+// // 方法二
+let promise3 = new Promise( ( resolve, reject ) => {
+    if ( !test1 ) {
+        resolve('成功1');
+    } else {
+        reject('失败1');
+    }
+}).then( () => {
+    // 这里是成功resolve('成功1')的回调
+    new Promise( ( resolve, reject ) => {
+        if ( !test1 ) {
+            resolve('成功2');
+        } else {
+            reject('失败2');
+        }
+    }).then( (data) => {
+        console.log(data);
+    }).catch( (err) => {
+        console.log(err);
+    });
+}).catch( (err) => {
+    // 这里是失败reject('失败1')的回调    
+    console.log(err);
+});
+
+// 方法三
+Promise.resolve(666).then( (data) => {
+    console.log(data);
+});
+
+function a() {
+    return new Promise( ( resolve, reject ) => {
+        setTimeout( () => {
+            console.log('执行任务a');
+            resolve('任务a执行成功');
+        }, 2000);
+
+    });
+}
+
+function b() {
+    return new Promise( ( resolve, reject ) => {
+        setTimeout( () => {
+            console.log('执行任务b');
+            resolve('执行任务b成功');
+        }, 2000);
+    });
+}
+
+function c() {
+    console.log('最后执行c');
+}
+
+a().then( () => {
+    b()
+}).then(() => {
+    c();
+});
+
+
+function postJSON(url, data) {
+    return new Promise( (resolve, reject) => {
+        var xhr = new XMLHttpRequest()
+        xhr.open("POST", url, true)
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (this.readyState === 4) {
+                if (this.status === 200) {
+                    resolve(JSON.parse(this.responseText), this)
+                } else {
+                    var resJson = { code: this.status, response: this.response }
+                    reject(resJson, this)
+                }
+            }
+        }
+        xhr.send(JSON.stringify(data))
+    })
+}
+
+// 获取第一个请求的数据当做参数给第二个请求用
+var data1 = '';
+postJSON('/indexHotList.shtml').then( (data) => {
+    // console.log(data);
+    data1 += JSON.stringify(data);
+    return postJSON('/indexMobileTop.shtml');   
+}).then( (data) => {
+    // console.log(data);    
+    data1 += JSON.stringify(data);
+    console.log(data1);
+});
+
+
+const path = require('path')
+const webpack = require('webpack')
+
+module.exports = {
+  entry: {
+    vendor: ['jquery', path.resolve('./src/assets/js/common.js'), 'vue'],
+    index: './js/index.js'
+  },
+  output: {
+    filename: '[name].js',
+    path: path.resolve(__dirname, 'static/assets/js'),
+    chunkFilename: '[name].js',
+    publicPath: '//192.168.1.31:3000/assets/js/',
+    // publicPath: '/static/pinku/assets/js/',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: 'babel-loader',
+        include: [path.resolve('./src'), path.resolve('./js')]
+      },
+      {
+        test: /\.html$/,
+        use: 'html-loader'
+      },
+      {
+        test: /\.pug$/,
+        use: 'pug-loader'
+      },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: "style-loader"
+          },
+          {
+            loader: "css-loader"
+          }
+        ]
+      },
+      {
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'sprite-loader', 'sass-loader']
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        loader: 'url-loader',
+        query: {
+          limit: 10000,
+          name: 'img/[name].[hash:7].[ext]'
+        }
+      },
+    ]
+  },
+  plugins: [
+    // new webpack.optimize.UglifyJsPlugin({
+    //   mangle: {
+    //     except: ['$super', '$', 'exports', 'require']
+    //   },
+    // })
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: Infinity
+    })
+  ],
+  amd: {
+    jQuery: true
+  },
+  resolve: {
+    alias: {
+      'vue$': 'vue/dist/vue.min.js',
+      'jquery$': 'jquery/dist/jquery.min.js'
+    }
+  }
+}
+</script>
+</body>
+</html>
